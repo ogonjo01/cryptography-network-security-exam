@@ -1,0 +1,36 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\WINDOWS\system32> $staffIP = "192.168.137.24"
+PS C:\WINDOWS\system32> New-NetFirewallRule -DisplayName "Allow-Staff-5000" -Direction Inbound -Protocol TCP -LocalPort 5000 -RemoteAddress $staffIP -Action Allow
+
+Name                          : {6a09ddbd-57d5-4e9b-b236-3e3c8818baae}
+DisplayName                   : Allow-Staff-5000
+Direction                     : Inbound
+Action                        : Allow
+Enabled                       : True
+Profile                       : Any
+PrimaryStatus                 : OK
+Status                        : The rule was parsed successfully from the store. (65536)
+
+PS C:\WINDOWS\system32> New-NetFirewallRule -DisplayName "Block-Others-5000" -Direction Inbound -Protocol TCP -LocalPort 5000 -RemoteAddress Any -Action Block
+
+Name                          : {3e0132d2-dc2d-49a6-80f9-97f7a1f3f521}
+DisplayName                   : Block-Others-5000
+Direction                     : Inbound
+Action                        : Block
+Enabled                       : True
+Profile                       : Any
+PrimaryStatus                 : OK
+Status                        : The rule was parsed successfully from the store. (65536)
+
+PS C:\WINDOWS\system32> Disable-NetFirewallRule -DisplayName "Block-Others-5000"
+[Test 1 state: Allow-Staff-5000 active, Block-Others-5000 disabled -> connection permitted]
+
+PS C:\WINDOWS\system32> Enable-NetFirewallRule -DisplayName "Block-Others-5000"
+PS C:\WINDOWS\system32> Disable-NetFirewallRule -DisplayName "Allow-Staff-5000"
+[Test 2/3 state: Block-Others-5000 active, Allow-Staff-5000 disabled -> connection blocked]
+
+PS C:\WINDOWS\system32> Enable-NetFirewallRule -DisplayName "Block-Others-5000"
+PS C:\WINDOWS\system32> Enable-NetFirewallRule -DisplayName "Allow-Staff-5000"
+[Rules restored to normal operating state]
